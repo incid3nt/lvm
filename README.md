@@ -199,6 +199,7 @@ root@debian:/home/oleg# df -h | grep /dev/mapper/debian--vg-tmp
 /usr/sbin/lvcreate -L 5G -n backup debian-vg
   Logical volume "backup" created.
 ```
+````
 root@debian:/# /usr/sbin/lvscan
   ACTIVE            '/dev/debian-vg/root' [4,03 GiB] inherit
   ACTIVE            '/dev/debian-vg/var' [6,65 GiB] inherit
@@ -206,3 +207,4 @@ root@debian:/# /usr/sbin/lvscan
   ACTIVE            '/dev/debian-vg/tmp' [<2,36 GiB] inherit
   ACTIVE            '/dev/debian-vg/home' [<12,53 GiB] inherit
   ACTIVE            '/dev/debian-vg/backup' [5,00 GiB] inherit
+```
