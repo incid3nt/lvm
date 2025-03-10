@@ -208,3 +208,16 @@ root@debian:/# /usr/sbin/lvscan
   ACTIVE            '/dev/debian-vg/home' [<12,53 GiB] inherit
   ACTIVE            '/dev/debian-vg/backup' [5,00 GiB] inherit
 ```
+форматируем ext4 ранее созданный том: /dev/debian-vg/backup
+/usr/sbin/mkfs.ext4 /dev/debian-vg/backup
+mke2fs 1.47.0 (5-Feb-2023)
+Creating filesystem with 1310720 4k blocks and 327680 inodes
+Filesystem UUID: 21240dca-dce2-412e-b5ce-bd85d87bab96
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
