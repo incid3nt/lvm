@@ -66,16 +66,45 @@ Disk /dev/mapper/debian--vg-home: 12,53 GiB, 13451132928 bytes, 26271744 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
-root@debian:/home/oleg# lsblk
-NAME                  MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-sda                     8:0    0   20G  0 disk
-├─sda1                  8:1    0  487M  0 part /boot
-├─sda2                  8:2    0    1K  0 part
-└─sda5                  8:5    0 19,5G  0 part
-  ├─debian--vg-root   254:0    0    4G  0 lvm  /
-  ├─debian--vg-var    254:1    0  1,7G  0 lvm  /var
-  ├─debian--vg-swap_1 254:2    0  976M  0 lvm  [SWAP]
-  ├─debian--vg-tmp    254:3    0  364M  0 lvm  /tmp
-  └─debian--vg-home   254:4    0 12,5G  0 lvm  /home
-sdb                     8:16   0   20G  0 disk
+
+```
+Как вы видите, у меня доступны два диска /dev/sda и /dev/sdb .
+
+sda уже задействован в lvm
+
+При настройке LVM на своем виртуальном или физическом сервере, используйте свою маркировку дисков.
+
+Чтобы диски были доступны для LVM, их нужно пометить (инициализировать) утилитой pvcreate:
+
+pvcreate /dev/sdb
+
+```
+root@debian:/home/oleg# /usr/sbin/pvcreate /dev/sdb
+  Physical volume "/dev/sdb" successfully created.
+```
+Теперь, чтобы убедиться, что данные диски можно использовать для LVM, введите команду pvdisplay:
+```
+root@debian:/home/oleg# /usr/sbin/pvdisplay
+  --- Physical volume ---
+  PV Name               /dev/sda5
+  VG Name               debian-vg
+  PV Size               19,52 GiB / not usable 2,00 MiB
+  Allocatable           yes (but full)
+  PE Size               4,00 MiB
+  Total PE              4997
+  Free PE               0
+  Allocated PE          4997
+  PV UUID               bb8jqs-5ITR-Jnlx-QXI0-Rpj1-r938-esKs0q
+
+  "/dev/sdb" is a new physical volume of "20,00 GiB"
+  --- NEW Physical volume ---
+  PV Name               /dev/sdb
+  VG Name
+  PV Size               20,00 GiB
+  Allocatable           NO
+  PE Size               0
+  Total PE              0
+  Free PE               0
+  Allocated PE          0
+  PV UUID               bjbWkG-ndOr-Aisi-ZQdt-qCqg-YrXJ-eICEt2
 ```
