@@ -108,3 +108,40 @@ root@debian:/home/oleg# /usr/sbin/pvdisplay
   Allocated PE          0
   PV UUID               bjbWkG-ndOr-Aisi-ZQdt-qCqg-YrXJ-eICEt2
 ```
+Как видим, оба диска отображаются. Разберем информацию из вывода команды:
+
+PV Name – имя диска или раздела
+VG Name – группа томов, в которую данный диск входит (мы пока группу не создали)
+PV Size – размер диска или размера
+Allocatable – распределение по группам. В нашем случае распределения не было, поэтому указано NO
+PE Size – размер физического фрагмента. Если диск не добавлен ни в одну группу, значение всегда будет 0
+Total PE – количество физических фрагментов
+Free PE — количество свободных физических фрагментов
+Allocated PE – распределенные фрагменты
+PV UUID – идентификатор раздела
+
+посмотрим группы томов: vgdisplay:
+```
+root@debian:/home/oleg# /usr/sbin/vgdisplay
+  --- Volume group ---
+  VG Name               debian-vg
+  System ID
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  6
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                5
+  Open LV               5
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <19,52 GiB
+  PE Size               4,00 MiB
+  Total PE              4997
+  Alloc PE / Size       4997 / <19,52 GiB
+  Free  PE / Size       0 / 0
+  VG UUID               kJJoKh-m9rj-wpFM-Oa4P-0mOD-jUC5-bO1FHh
+
+```
