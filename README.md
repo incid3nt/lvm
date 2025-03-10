@@ -220,4 +220,8 @@ Allocating group tables: done
 Writing inode tables: done
 Creating journal (16384 blocks): done
 Writing superblocks and filesystem accounting information: done
-
+```
+примонитируем:
+```
+mount /dev/mapper/debian--vg-backup /mnt/backup
+```
