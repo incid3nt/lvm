@@ -145,3 +145,51 @@ root@debian:/home/oleg# /usr/sbin/vgdisplay
   VG UUID               kJJoKh-m9rj-wpFM-Oa4P-0mOD-jUC5-bO1FHh
 
 ```
+расширим vg за счет нового диска sdb
+```
+root@debian:/home/oleg# /usr/sbin/vgextend debian-vg /dev/sdb
+  Volume group "debian-vg" successfully extended
+```
+проверим
+```
+
+root@debian:/home/oleg# /usr/sbin/vgs
+  VG        #PV #LV #SN Attr   VSize   VFree
+  debian-vg   2   5   0 wz--n- <39,52g <20,00g
+
+```
+как видим VG Size увеличился
+
+```
+root@debian:/home/oleg# df -h
+Файловая система            Размер Использовано  Дост Использовано% Cмонтировано в
+udev                          960M            0  960M            0% /dev
+tmpfs                         197M         600K  197M            1% /run
+/dev/mapper/debian--vg-root   3,9G         1,4G  2,4G           37% /
+tmpfs                         984M            0  984M            0% /dev/shm
+tmpfs                         5,0M            0  5,0M            0% /run/lock
+/dev/mapper/debian--vg-tmp    332M          10K  309M            1% /tmp
+/dev/mapper/debian--vg-home    13G          44K   12G            1% /home
+/dev/mapper/debian--vg-var    1,6G         333M  1,2G           22% /var
+/dev/sda1                     455M          99M  332M           23% /boot
+tmpfs                         197M            0  197M            0% /run/user/1000
+```
+расширим tmp на 2G
+```
+root@debian:/home/oleg# /usr/sbin/lvextend -L+2G /dev/mapper/debian--vg-tmp
+  Size of logical volume debian-vg/tmp changed from 364,00 MiB (91 extents) to <2,36 GiB (603 extents).
+  Logical volume debian-vg/tmp successfully resized.
+```
+расширим:
+```
+resize2fs /dev/mapper/debian--vg-tmp
+resize2fs 1.47.0 (5-Feb-2023)
+Filesystem at /dev/mapper/debian--vg-tmp is mounted on /tmp; on-line resizing required
+old_desc_blocks = 3, new_desc_blocks = 19
+The filesystem on /dev/mapper/debian--vg-tmp is now 2469888 (1k) blocks long.
+```
+```
+root@debian:/home/oleg# df -h | grep /dev/mapper/debian--vg-tmp
+/dev/mapper/debian--vg-tmp    2,2G          10K  2,1G            1% /tmp
+```
+как мы видим все прошло успешно.
